@@ -5,7 +5,11 @@ const config: HardhatUserConfig = {
   solidity: "0.8.19",
   networks: {
     hardhat: {
-      chainId: parseInt(process.env.CHAIN_ID || '31337')
+      chainId: parseInt(process.env.CHAIN_ID || '31337'),
+      mining: {
+        auto: "true" === (process.env.AUTO_MINE || 'true'),
+        interval: parseInt(process.env.MINE_INTERVAL || '0'),
+      }
     }
   }
 };
