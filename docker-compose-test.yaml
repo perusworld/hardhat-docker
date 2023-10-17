@@ -1,0 +1,18 @@
+version: '3.8'
+
+services:
+  evm_1:
+    build:
+      context: https://github.com/perusworld/hardhat-docker.git#main
+    environment:
+      - CHAIN_ID=31338
+    ports:
+      - 8548:8545
+  evm_2:
+    build:
+      context: https://github.com/perusworld/hardhat-docker.git#main
+    environment:
+      - CHAIN_ID=31339
+      - MINE_INTERVAL=2000
+    ports:
+      - 8549:8545
