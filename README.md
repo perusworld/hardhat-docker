@@ -17,5 +17,19 @@ docker compose -p multiple -f docker-compose-test.yaml up
 docker compose -p multiple -f docker-compose-test.yaml down
 
 
+# Build first
+docker compose build
+
+# Run with custom names
+docker compose -p hardhat-node up -d
+
+# Stop
+docker compose -p hardhat-node down
+
+
+
+docker compose -f docker-compose-local.yaml build
+AUTO_MINE=false MINE_INTERVAL=1000 docker compose -f docker-compose-local.yaml -p hardhat-node-local up
+docker compose -f docker-compose-local.yaml -p hardhat-node-local down -v
 
 ```

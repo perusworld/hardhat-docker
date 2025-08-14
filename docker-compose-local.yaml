@@ -1,0 +1,11 @@
+services:
+  node:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    environment:
+      - CHAIN_ID=${CHAIN_ID:-31337}
+      - AUTO_MINE=${AUTO_MINE:-true}
+      - MINE_INTERVAL=${MINE_INTERVAL:-0}
+    ports:
+      - 8545:8545
