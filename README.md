@@ -11,25 +11,16 @@ docker logs -f evm_1
 docker stop evm_1
 docker rm evm_1
 
-#with docker compose
-docker compose -p multiple -f docker-compose-test.yaml build
-docker compose -p multiple -f docker-compose-test.yaml up
-docker compose -p multiple -f docker-compose-test.yaml down
-
-
 # Build first
-docker compose build
-
-# Run with custom names
+with docker compose single
 docker compose -p hardhat-node up -d
-
-# Stop
+AUTO_MINE=false MINE_INTERVAL=1000 docker compose -p hardhat-node up -d
 docker compose -p hardhat-node down
 
 
-
-docker compose -f docker-compose-local.yaml build
-AUTO_MINE=false MINE_INTERVAL=1000 docker compose -f docker-compose-local.yaml -p hardhat-node-local up
-docker compose -f docker-compose-local.yaml -p hardhat-node-local down -v
+# with docker compose multiple
+docker compose -p multiple -f docker-compose-test.yaml build
+docker compose -p multiple -f docker-compose-test.yaml up
+docker compose -p multiple -f docker-compose-test.yaml down
 
 ```
