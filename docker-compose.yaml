@@ -7,5 +7,9 @@ services:
       - CHAIN_ID=${CHAIN_ID:-31337}
       - AUTO_MINE=${AUTO_MINE:-true}
       - MINE_INTERVAL=${MINE_INTERVAL:-0}
+      - HARDHAT_NODE_LOGGING=${HARDHAT_NODE_LOGGING:-true}
+      - GAS=${GAS}
+      - GAS_PRICE=${GAS_PRICE:-0}
+      - INITIAL_BASE_FEE_PER_GAS=${INITIAL_BASE_FEE_PER_GAS:-0}
     ports:
       - 8545:8545

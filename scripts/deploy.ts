@@ -1,6 +1,8 @@
-import { ethers } from "hardhat";
+import hre from "hardhat";
 
 async function main() {
+  const { ethers } = await hre.network.connect();
+
   const currentTimestampInSeconds = Math.round(Date.now() / 1000);
   const unlockTime = currentTimestampInSeconds + 60;
 

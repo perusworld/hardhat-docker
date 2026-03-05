@@ -1,2 +1,2 @@
 #!/bin/sh
-npx hardhat node 
+exec npx hardhat node

@@ -11,6 +11,7 @@ services:
       context: https://github.com/perusworld/hardhat-docker.git#main
     environment:
       - CHAIN_ID=31339
+      - AUTO_MINE=false
       - MINE_INTERVAL=2000
     ports:
       - 8549:8545
