@@ -13,7 +13,12 @@ const initialBaseFeePerGas = parseInt(process.env.INITIAL_BASE_FEE_PER_GAS ?? "0
 
 export default defineConfig({
   plugins: [hardhatToolboxMochaEthers],
-  solidity: "0.8.34",
+  solidity: {
+    version: "0.8.34",
+    settings: {
+      evmVersion: "cancun",
+    },
+  },
   networks: {
     hardhat: {
       type: "edr-simulated",
