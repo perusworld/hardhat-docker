@@ -6,6 +6,7 @@
   "type": "module",
   "scripts": {
     "test": "hardhat test",
+    "node": "hardhat node",
     "deploy": "hardhat run scripts/deploy.ts",
     "deploy:local": "hardhat run scripts/deploy.ts --network localnode"
   },
