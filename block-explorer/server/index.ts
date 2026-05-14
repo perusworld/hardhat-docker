@@ -6,7 +6,7 @@ import { URL } from 'node:url'
 import { ethers } from 'ethers'
 import { addressLabelsSource, getAddressLabel, getAddressLabels } from './addressLabels.ts'
 import { artifactRoots, resolveContractMetadata, scanArtifacts, scanIgnitionDeployments } from './artifacts.ts'
-import { databasePath, rpcUrl, serveStatic, serverPort, staticAssetsPath } from './config.ts'
+import { databasePath, rpcUrl, serveStatic, serverHost, serverPort, staticAssetsPath } from './config.ts'
 import { getTokenSummaries, getTokenTransfers } from './db.ts'
 import { getIndexerStatus, startIndexer, syncToLatest } from './indexer.ts'
 
@@ -225,8 +225,8 @@ createServer(async (request, response) => {
       response.writeHead(500, jsonHeaders)
       response.end(JSON.stringify({ error: error instanceof Error ? error.message : 'Unknown error' }))
     })
-}).listen(serverPort, '127.0.0.1', () => {
-  console.log(`Explorer API listening on http://127.0.0.1:${serverPort}`)
+}).listen(serverPort, serverHost, () => {
+  console.log(`Explorer API listening on http://${serverHost}:${serverPort}`)
   if (serveStatic) console.log(`Explorer UI path: ${staticAssetsPath}`)
   console.log(`SQLite database: ${databasePath}`)
 })

@@ -1,5 +1,6 @@
 services:
   node:
+    image: hardhat-docker-node:latest
     build:
       context: .
       dockerfile: Dockerfile
@@ -13,3 +14,27 @@ services:
       - INITIAL_BASE_FEE_PER_GAS=${INITIAL_BASE_FEE_PER_GAS:-0}
     ports:
       - 8545:8545
+
+  explorer:
+    image: hardhat-docker-explorer:latest
+    build:
+      context: .
+      dockerfile: block-explorer/Dockerfile
+    depends_on:
+      - node
+    environment:
+      - RPC_URL=http://node:8545
+      - EXPLORER_API_HOST=0.0.0.0
+      - EXPLORER_API_PORT=8787
+      - EXPLORER_DB_PATH=/data/explorer.sqlite
+      - EXPLORER_ARTIFACTS_PATH=/workspace/artifacts
+      - EXPLORER_IGNITION_DEPLOYMENTS_PATH=/workspace/ignition/deployments
+      - EXPLORER_ADDRESS_LABELS_PATH=/workspace/address-labels.example.env
+      - EXPLORER_STATIC_PATH=/workspace/block-explorer/dist
+    ports:
+      - 8787:8787
+    volumes:
+      - explorer-data:/data
+
+volumes:
+  explorer-data:

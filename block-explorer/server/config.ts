@@ -3,6 +3,7 @@ import { dirname, resolve } from 'node:path'
 
 export const rpcUrl = process.env.RPC_URL ?? process.env.VITE_RPC_URL ?? 'http://127.0.0.1:8545'
 export const serverPort = Number(process.env.EXPLORER_API_PORT ?? 8787)
+export const serverHost = process.env.EXPLORER_API_HOST ?? '127.0.0.1'
 export const databasePath = resolve(process.env.EXPLORER_DB_PATH ?? '.data/explorer.sqlite')
 export const pollIntervalMs = Number(process.env.EXPLORER_POLL_INTERVAL_MS ?? 2_000)
 export const indexStartBlock = Number(process.env.EXPLORER_INDEX_START_BLOCK ?? 0)

@@ -14,6 +14,5 @@ COPY test /usr/src/app/test
 COPY *.sh /usr/src/app/
 COPY *.ts /usr/src/app/
 COPY tsconfig.json /usr/src/app/
-RUN ls -la
 EXPOSE 8545
 ENTRYPOINT ["/bin/sh", "/usr/src/app/in-container.sh"]

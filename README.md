@@ -46,6 +46,9 @@ docker rm evm_0 evm_1 evm_2
 docker compose -p hardhat-node up -d
 docker compose -p hardhat-node down
 
+# Node plus explorer
+docker compose -p hardhat-node up -d node explorer
+
 # Interval mining
 AUTO_MINE=false MINE_INTERVAL=1000 docker compose -p hardhat-node up -d
 
@@ -54,6 +57,8 @@ docker compose -p multiple -f docker-compose-test.yaml build
 docker compose -p multiple -f docker-compose-test.yaml up
 docker compose -p multiple -f docker-compose-test.yaml down
 ```
+
+With the explorer service enabled, the node is exposed on `http://127.0.0.1:8545` and the explorer is exposed on `http://127.0.0.1:8787`.
 
 ## Deploy against the Docker node (Ignition)
 
@@ -140,6 +145,7 @@ VITE_RPC_URL=http://127.0.0.1:8545
 VITE_SCAN_DEPTH=1000
 VITE_EXPLORER_API_URL=http://127.0.0.1:8787
 EXPLORER_API_PORT=8787
+EXPLORER_API_HOST=127.0.0.1
 EXPLORER_DB_PATH=.data/explorer.sqlite
 EXPLORER_ARTIFACTS_PATH=../artifacts
 EXPLORER_IGNITION_DEPLOYMENTS_PATH=../ignition/deployments
@@ -151,6 +157,8 @@ EXPLORER_SERVE_STATIC=true
 The explorer includes dashboard, blocks, transactions, address details, plugin-backed token transfers, plugin-backed NFT transfers, token activity, NFT activity, artifact-backed decoded transaction input data, and artifact-backed contract read/write views with optional browser ABI fallback. Token and NFT plugins are registered under `block-explorer/server/plugins`.
 
 The API server reads Hardhat artifacts and Ignition deployment maps directly from the root project by default, so there is no artifact copy step in the normal repo layout. Override `EXPLORER_ARTIFACTS_PATH` or `EXPLORER_IGNITION_DEPLOYMENTS_PATH` only when running the explorer from a different directory structure.
+
+In Docker Compose, the explorer runs as a separate image built from `block-explorer/Dockerfile`. It talks to the node at `http://node:8545`, stores its SQLite index in the `explorer-data` volume, and reads compiled artifacts from `/workspace/artifacts` inside the explorer image. The explorer image runs `npx hardhat compile` during build, so artifact-backed ABI decoding works without mounting the local `artifacts` directory. For project-specific address labels in Docker, mount a labels file and point `EXPLORER_ADDRESS_LABELS_PATH` at it; otherwise the image uses `address-labels.example.env`.
 
 Optional ENS-like address labels can be loaded from `address-labels.env`. Start from the checked-in example:
 
