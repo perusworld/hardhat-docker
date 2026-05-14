@@ -8,6 +8,7 @@ FROM node:24 AS runtime
 WORKDIR /usr/src/app
 COPY --from=build /usr/src/app /usr/src/app
 COPY contracts /usr/src/app/contracts
+COPY ignition /usr/src/app/ignition
 COPY scripts /usr/src/app/scripts
 COPY test /usr/src/app/test
 COPY *.sh /usr/src/app/
