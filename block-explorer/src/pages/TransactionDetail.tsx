@@ -1,5 +1,6 @@
 import { Card, Result, Space, Spin, Tag, Typography } from 'antd'
 import { Link, useParams } from 'react-router-dom'
+import DecodedInputData from '../components/DecodedInputData'
 import DetailList from '../components/DetailList'
 import HashLink from '../components/HashLink'
 import TokenTransferTable from '../components/TokenTransferTable'
@@ -82,6 +83,13 @@ export default function TransactionDetail() {
           {data.transaction.data}
         </Typography.Paragraph>
       </Card>
+
+      <DecodedInputData
+        data={data.transaction.data}
+        methodId={data.methodId}
+        to={data.transaction.to}
+        value={data.transaction.value}
+      />
 
       <TokenTransferTable
         title="Decoded token and NFT transfers"

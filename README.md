@@ -95,7 +95,7 @@ The seed script deploys `SampleToken` and `SampleNFT`, then creates ERC-20 trans
 
 ## Block explorer
 
-The current explorer UI is `block-explorer`, a Vite + React + TypeScript app for local Hardhat nodes. It replaces the older Create React App explorer.
+The current explorer is `block-explorer`, a Vite + React + TypeScript app with a small local SQLite-backed API server for token and NFT indexing.
 
 Start the node from the repository root:
 
@@ -103,22 +103,69 @@ Start the node from the repository root:
 npx hardhat node
 ```
 
-Then run the explorer:
+For normal local usage, build the explorer UI and run the backend server:
 
 ```shell
 cd block-explorer
 npm install
+npm run serve
+```
+
+Open `http://127.0.0.1:8787/`. The backend serves both the React UI and `/api/*`.
+
+If `npm run serve` fails with a `better-sqlite3` `NODE_MODULE_VERSION` mismatch after changing Node.js versions, rebuild the native dependency:
+
+```shell
+npm rebuild better-sqlite3
+```
+
+For active frontend development, run the API server and Vite separately:
+
+```shell
+cd block-explorer
+npm run dev:server
+```
+
+In another terminal:
+
+```shell
+cd block-explorer
 npm run dev
 ```
 
-Open `http://127.0.0.1:5173/`. By default the explorer reads `http://127.0.0.1:8545` and scans the latest 1000 blocks. You can override that with:
+Open `http://127.0.0.1:5173/`. Vite proxies `/api` requests to `http://127.0.0.1:8787/`. By default the browser reads `http://127.0.0.1:8545` for core chain views, while token and NFT views read from the API server. You can override that with:
 
 ```env
 VITE_RPC_URL=http://127.0.0.1:8545
 VITE_SCAN_DEPTH=1000
+VITE_EXPLORER_API_URL=http://127.0.0.1:8787
+EXPLORER_API_PORT=8787
+EXPLORER_DB_PATH=.data/explorer.sqlite
+EXPLORER_ARTIFACTS_PATH=../artifacts
+EXPLORER_IGNITION_DEPLOYMENTS_PATH=../ignition/deployments
+EXPLORER_ADDRESS_LABELS_PATH=../address-labels.env
+EXPLORER_STATIC_PATH=dist
+EXPLORER_SERVE_STATIC=true
 ```
 
-The explorer includes dashboard, blocks, transactions, address details, decoded token transfers, decoded NFT transfers, token activity, NFT activity, and local ABI-backed contract read/write views.
+The explorer includes dashboard, blocks, transactions, address details, plugin-backed token transfers, plugin-backed NFT transfers, token activity, NFT activity, artifact-backed decoded transaction input data, and artifact-backed contract read/write views with optional browser ABI fallback. Token and NFT plugins are registered under `block-explorer/server/plugins`.
+
+The API server reads Hardhat artifacts and Ignition deployment maps directly from the root project by default, so there is no artifact copy step in the normal repo layout. Override `EXPLORER_ARTIFACTS_PATH` or `EXPLORER_IGNITION_DEPLOYMENTS_PATH` only when running the explorer from a different directory structure.
+
+Optional ENS-like address labels can be loaded from `address-labels.env`. Start from the checked-in example:
+
+```shell
+cp address-labels.example.env address-labels.env
+```
+
+Each line is `address=label`, such as:
+
+```env
+0xf39fd6e51aad88f6f4ce6ab8827279cfffb92266=Hardhat Deployer
+0x70997970c51812dc3a010c7d01b50e0d17dc79c8=Alice
+```
+
+The explorer shows those labels beside matching addresses in transaction tables, token transfers, block miner details, and address pages.
 
 ### Sepolia
 

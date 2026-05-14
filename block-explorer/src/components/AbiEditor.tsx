@@ -6,10 +6,12 @@ import type { StoredAbi } from '../lib/abiStore'
 
 type AbiEditorProps = {
   address: string
+  backendAbi?: string
+  backendLabel?: string
   storedAbi?: StoredAbi
 }
 
-export default function AbiEditor({ address, storedAbi }: AbiEditorProps) {
+export default function AbiEditor({ address, backendAbi, backendLabel, storedAbi }: AbiEditorProps) {
   const [form] = Form.useForm<{ abi: string }>()
   const saveAbi = useSaveStoredAbi(address)
   const deleteAbi = useDeleteStoredAbi(address)
@@ -41,8 +43,21 @@ export default function AbiEditor({ address, storedAbi }: AbiEditorProps) {
         <Alert
           type="info"
           showIcon
-          message="Paste a JSON ABI array or a compiler artifact with an abi field."
+          message={
+            backendAbi
+              ? 'This contract has an artifact ABI. Browser storage is only used as a fallback when the backend cannot resolve an ABI.'
+              : 'Paste a JSON ABI array or a compiler artifact with an abi field to use as a browser fallback.'
+          }
         />
+        {backendAbi && (
+          <div>
+            <Typography.Title level={5}>Artifact ABI</Typography.Title>
+            {backendLabel && <Typography.Paragraph type="secondary">{backendLabel}</Typography.Paragraph>}
+            <Typography.Paragraph copyable className="code-block">
+              {backendAbi}
+            </Typography.Paragraph>
+          </div>
+        )}
         <Form form={form} layout="vertical" onFinish={handleSave}>
           <Form.Item
             name="abi"

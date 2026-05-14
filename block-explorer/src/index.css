@@ -105,6 +105,13 @@ a {
   max-width: 100%;
 }
 
+.address-label-hash {
+  display: block;
+  margin-top: 1px;
+  font-size: 12px;
+  line-height: 1.25;
+}
+
 .block-text {
   display: block;
   margin-top: 2px;
@@ -136,6 +143,25 @@ a {
   border-color: #e6e9f0;
 }
 
+.decoded-function {
+  display: grid;
+  gap: 8px;
+  grid-template-columns: 120px 1fr;
+  margin-bottom: 16px;
+}
+
+.decoded-value {
+  margin-bottom: 0 !important;
+  max-width: 720px;
+  white-space: pre-wrap;
+  word-break: break-word;
+}
+
+.decoded-source {
+  display: block;
+  margin-top: 6px;
+}
+
 .activity-tabs .ant-tabs-nav {
   margin-bottom: 0;
 }
@@ -157,5 +183,9 @@ a {
   .page-heading {
     align-items: flex-start;
     flex-direction: column;
+  }
+
+  .decoded-function {
+    grid-template-columns: 1fr;
   }
 }

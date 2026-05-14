@@ -23,6 +23,7 @@
 .env
 .env.*
 !.env.example
+address-labels.env
 
 # Hardhat coverage reports
 /coverage
